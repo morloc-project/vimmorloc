@@ -29,6 +29,7 @@ syn keyword reserved source
 syn keyword reserved export
 syn keyword reserved True
 syn keyword reserved False
+syn keyword reserved forall
 
 " -----------------------------------------------------------------------------
 hi def link reserved Keyword
