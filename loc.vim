@@ -75,7 +75,7 @@ syn match operator /</
 syn match operator />=/
 syn match operator /<=/
 syn match operator /+/
-syn match operator /-/
+syn match operator /[^a-z]-[^a-z]/
 syn match operator /\//
 syn match operator /\/\// " integer division
 syn match operator /%/ " modulus
