@@ -39,8 +39,9 @@ hi def link reserved Keyword
 "                           P R I M A T I V E S
 " -----------------------------------------------------------------------------
 syn region s_string start=/"/ end=/"/
-syn region s_execute start=/`/ end=/`/
-syn region s_execute start=/\[[a-zA-Z0-9]*|/ end=/|\]/
+syn region s_string start=/'''/ end=/'''/
+syn region s_string start=/"""/ end=/"""/
+
 syn match s_num '\([a-zA-Z_]\)\@<!\<[0-9]\+\>\([a-zA-Z_]\)\@!'
 syn match s_dbl '\([a-zA-Z_]\)\@<!\<[0-9]\+\.[0-9]\+\>\([a-zA-Z_]\)\@!'
 
