@@ -34,13 +34,46 @@ syn keyword reserved False
 hi def link reserved Keyword
 
 
+" =============================================================================
+"                               S T R I N G S
+" -----------------------------------------------------------------------------
+
+
+" Interpolation regions inside strings
+syn match s_escape_special contained /\\[nrtbfv0'"#\\]/ 
+syn match s_escape_unicode contained /\\u[0-9a-fA-F]\{4}/
+syn match s_escape_unicode contained /\\U[0-9a-fA-F]\{8}/
+syn match s_escape_hex contained /\\x[0-9a-fA-F]\{1,2}/
+
+" #{expression} is interpolation - contains everything except the string delimiters
+syn region s_interpolation contained matchgroup=s_interp_delim start=/#{/ skip=/\\#{/ end=/}/ 
+      \ contains=TOP
+
+" Main string region - double-quoted strings
+syn region s_string start=/"/ skip=/\\./ end=/"/ 
+      \ contains=s_escape_special,s_escape_unicode,s_escape_hex,s_interpolation,s_interp_literal
+
+" Main string region - multiline strings double quotes
+syn region s_string start=/"""/ skip=/\\./ end=/"""/ 
+      \ contains=s_escape_special,s_escape_unicode,s_escape_hex,s_interpolation,s_interp_literal
+
+" Main string region - multiline strings single quotes
+syn region s_string start=/'''/ skip=/\\./ end=/'''/ 
+      \ contains=s_escape_special,s_escape_unicode,s_escape_hex,s_interpolation,s_interp_literal
+
+" Highlighting groups
+hi def link s_string String
+hi def link s_raw_string String
+hi def link s_escape_special SpecialChar
+hi def link s_escape_unicode SpecialChar
+hi def link s_escape_hex SpecialChar
+hi def link s_interp_literal Error
+hi def link s_interp_delim Delimiter
+hi def link s_interpolation Identifier
 
 " =============================================================================
 "                           P R I M A T I V E S
 " -----------------------------------------------------------------------------
-syn region s_string start=/"/ end=/"/
-syn region s_string start=/'''/ end=/'''/
-syn region s_string start=/"""/ end=/"""/
 
 syn match s_num '\([a-zA-Z_]\)\@<!\<[0-9]\+\>\([a-zA-Z_]\)\@!'
 syn match s_dbl '\([a-zA-Z_]\)\@<!\<[0-9]\+\.[0-9]\+\>\([a-zA-Z_]\)\@!'
