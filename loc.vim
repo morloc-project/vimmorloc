@@ -72,15 +72,32 @@ hi def link s_interp_delim Delimiter
 hi def link s_interpolation Identifier
 
 " =============================================================================
+"                           G E T T E R  /  S E T T E R
+" -----------------------------------------------------------------------------
+
+" Match simple numeric index: .0, .1, .42, etc.
+syntax match GetterIndex '\d\@<!\.\?\(\.[0-9]\+\|\.\a[a-zA-Z0-9_]*\)\+\.\?' 
+syntax match GetterIndex '\.(\@=' 
+highlight link GetterIndex Special
+
+" " " Match grouped selectors: .(0,2), .(x,y,z), .(0, name), etc.
+" syntax region GetterGroup start='\.(' end=')' contains=GetterGroupContent
+" " syntax match GetterGroupContent '[a-zA-Z0-9_\. ]\+' contained
+" highlight link GetterGroup Special
+" " highlight link GetterGroupContent Special
+
+" Optional: Match chained selectors as a unit: .x.y.z or .0.1.2
+syntax match GetterChain '\<\(\.\(\d\+\|[a-zA-Z_][a-zA-Z0-9_]*\)\)\{2,}\>'
+highlight link GetterChain Function
+
+
+" =============================================================================
 "                           P R I M A T I V E S
 " -----------------------------------------------------------------------------
 
-syn match s_num '\([a-zA-Z_]\)\@<!\<[0-9]\+\>\([a-zA-Z_]\)\@!'
-syn match s_dbl '\([a-zA-Z_]\)\@<!\<[0-9]\+\.[0-9]\+\>\([a-zA-Z_]\)\@!'
+syn match s_num '\([a-zA-Z_.]\)\@<!\<[0-9]\+\>\([a-zA-Z_]\)\@!'
+syn match s_dbl '\([a-zA-Z_.]\)\@<!\<[0-9]\+\.[0-9]\+\>\([a-zA-Z_]\)\@!'
 
-" syn match s_num '\v(\h)@<!-?(\d*\.\d+|\d+)(\h)\@!'
-"                  -------                -------
-"                  negative look behind   negative look ahead
 " -----------------------------------------------------------------------------
 hi def link s_num      Number
 hi def link s_dbl      Number
