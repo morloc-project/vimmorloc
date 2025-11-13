@@ -96,11 +96,19 @@ highlight link GetterChain Function
 " -----------------------------------------------------------------------------
 
 syn match s_num '\([a-zA-Z_.]\)\@<!\<[0-9]\+\>\([a-zA-Z_]\)\@!'
+syn match s_hex '0[Xx][0-9a-fA-F]\+'
+syn match s_oct '0[Oo][0-7]\+'
+syn match s_bin '0[Bb][01]\+'
 syn match s_dbl '\([a-zA-Z_.]\)\@<!\<[0-9]\+\.[0-9]\+\>\([a-zA-Z_]\)\@!'
+syn match s_sci '\([a-zA-Z_.]\)\@<!\<[0-9]\+\.[0-9]\+[Ee]-\?[0-9]\+\>\([a-zA-Z_]\)\@!'
 
 " -----------------------------------------------------------------------------
 hi def link s_num      Number
+hi def link s_hex      Number
+hi def link s_oct      Number
+hi def link s_bin      Number
 hi def link s_dbl      Number
+hi def link s_sci      Number
 hi def link s_string   String
 hi def link s_execute  String
 
