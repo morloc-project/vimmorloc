@@ -165,13 +165,14 @@ hi def link s_varlabel Special
 syn match s_todo /\(TODO\|NOTE\|FIXME\):/ contained
 syn keyword s_todo XXX contained
 syn match s_doc_tag /\(author\|desc\|email\|github\|bugs\|website\|maintainer\):/ contained
-syn match s_doc_tag /\(arg\|short\|long\|metavar\|metavars\|group\|form\|example\|unroll\|default\|literal\):/ contained
+syn match s_doc_tag /\(arg\|short\|long\|name\|metavar\|metavars\|group\|form\|example\|unroll\|default\|literal\):/ contained
 
 " define comments
 " syn match comment '\/\/.*$' contains=tag
 " syn region comment start='\/\*' end='\*\/' contains=tag
 syn match s_docstr '--\'.*' contains=s_doc_tag
-syn match s_comment '--[^'].*' contains=s_todo
+syn match s_comment '--\'\@!.*' contains=s_todo
+
 syn region s_comment start="{-" end="-}" contains=s_todo
 
 " =============================================================================
