@@ -165,7 +165,7 @@ hi def link s_varlabel Special
 syn match s_todo /\(TODO\|NOTE\|FIXME\):/ contained
 syn keyword s_todo XXX contained
 syn match s_doc_tag /\(author\|desc\|email\|github\|bugs\|website\|maintainer\):/ contained
-syn match s_doc_tag /\(arg\|short\|long\|name\|metavar\|metavars\|group\|form\|example\|unroll\|default\|literal\):/ contained
+syn match s_doc_tag /\(arg\|short\|long\|name\|true\|false\|metavar\|metavars\|group\|form\|example\|unroll\|default\|literal\):/ contained
 
 " define comments
 " syn match comment '\/\/.*$' contains=tag
