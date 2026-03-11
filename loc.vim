@@ -20,18 +20,18 @@ let b:current_syntax = "loc"
 "                             K E Y W O R D S
 " -----------------------------------------------------------------------------
 
+syn keyword reserved where module from as source export
+syn keyword reserved do in let
+syn keyword reserved type record object table
+syn keyword reserved class instance import
+syn keyword reserved infixl infixr infix
 
-syn keyword reserved where
-syn keyword reserved module
-syn keyword reserved from
-syn keyword reserved as
-syn keyword reserved source
-syn keyword reserved export
-syn keyword reserved True
-syn keyword reserved False
+syn keyword s_constant True False Null
 
 " -----------------------------------------------------------------------------
 hi def link reserved Keyword
+hi def link s_constant Constant
+
 
 
 " =============================================================================
@@ -40,25 +40,25 @@ hi def link reserved Keyword
 
 
 " Interpolation regions inside strings
-syn match s_escape_special contained /\\[nrtbfv0'"#\\]/ 
+syn match s_escape_special contained /\\[nrtbfv0'"#\\]/
 syn match s_escape_unicode contained /\\u[0-9a-fA-F]\{4}/
 syn match s_escape_unicode contained /\\U[0-9a-fA-F]\{8}/
 syn match s_escape_hex contained /\\x[0-9a-fA-F]\{1,2}/
 
 " #{expression} is interpolation - contains everything except the string delimiters
-syn region s_interpolation contained matchgroup=s_interp_delim start=/#{/ skip=/\\#{/ end=/}/ 
+syn region s_interpolation contained matchgroup=s_interp_delim start=/#{/ skip=/\\#{/ end=/}/
       \ contains=TOP
 
 " Main string region - double-quoted strings
-syn region s_string start=/"/ skip=/\\./ end=/"/ 
+syn region s_string start=/"/ skip=/\\./ end=/"/
       \ contains=s_escape_special,s_escape_unicode,s_escape_hex,s_interpolation,s_interp_literal
 
 " Main string region - multiline strings double quotes
-syn region s_string start=/"""/ skip=/\\./ end=/"""/ 
+syn region s_string start=/"""/ skip=/\\./ end=/"""/
       \ contains=s_escape_special,s_escape_unicode,s_escape_hex,s_interpolation,s_interp_literal
 
 " Main string region - multiline strings single quotes
-syn region s_string start=/'''/ skip=/\\./ end=/'''/ 
+syn region s_string start=/'''/ skip=/\\./ end=/'''/
       \ contains=s_escape_special,s_escape_unicode,s_escape_hex,s_interpolation,s_interp_literal
 
 " Highlighting groups
@@ -76,15 +76,9 @@ hi def link s_interpolation Identifier
 " -----------------------------------------------------------------------------
 
 " Match simple numeric index: .0, .1, .42, etc.
-syntax match GetterIndex '\d\@<!\.\?\(\.[0-9]\+\|\.\a[a-zA-Z0-9_]*\)\+\.\?' 
-syntax match GetterIndex '\.(\@=' 
+syntax match GetterIndex '\d\@<!\.\?\(\.[0-9]\+\|\.\a[a-zA-Z0-9_]*\)\+\.\?'
+syntax match GetterIndex '\.(\@='
 highlight link GetterIndex Special
-
-" " " Match grouped selectors: .(0,2), .(x,y,z), .(0, name), etc.
-" syntax region GetterGroup start='\.(' end=')' contains=GetterGroupContent
-" " syntax match GetterGroupContent '[a-zA-Z0-9_\. ]\+' contained
-" highlight link GetterGroup Special
-" " highlight link GetterGroupContent Special
 
 " Optional: Match chained selectors as a unit: .x.y.z or .0.1.2
 syntax match GetterChain '\<\(\.\(\d\+\|[a-zA-Z_][a-zA-Z0-9_]*\)\)\{2,}\>'
@@ -109,50 +103,47 @@ hi def link s_oct      Number
 hi def link s_bin      Number
 hi def link s_dbl      Number
 hi def link s_sci      Number
-hi def link s_string   String
-hi def link s_execute  String
 
 " =============================================================================
 "                            O P E R A T O R S
 " -----------------------------------------------------------------------------
-syn match operator /=/
-syn match operator /::/
-syn match operator /:/
-syn match operator /,/
-syn match operator /(/
-syn match operator /)/
-syn match operator /\[/
-syn match operator /\]/
-syn match operator /{/
-syn match operator /}/
-syn match operator /->/
-syn match operator /=>/
 
-" operators allowed in constraints
-syn match operator />/
-syn match operator /</
-syn match operator />=/
-syn match operator /<=/
-syn match operator /+/
-syn match operator / - /
-syn match operator /\//
-syn match operator /\/\// " integer division
-syn match operator /%/ " modulus
-syn match operator /^/ " exponentiation
-
-syn match operator /;/
-syn match operator /@/
+" Generic operators (defined first so more specific patterns below take priority)
+syn match operator /[!|@#$%^&*<>.:?/+=`~-][!|@#$%^&*<>.:?/+=`~-]*/
+syn match operator /[()[\]{}]/
 
 " -----------------------------------------------------------------------------
 hi def link operator Operator
 
+" =============================================================================
+"                       P R A G M A S  &  I N T R I N S I C S
+" -----------------------------------------------------------------------------
 
+" %inline pragma (dim, like comments)
+syn match s_pragma '%inline'
+
+" Intrinsic functions: @show, @read, @hash, @save, @savem, @savej, @load, @lang
+syn match s_intrinsic '@[a-z][a-zA-Z0-9_]*'
+
+" -----------------------------------------------------------------------------
+hi def link s_pragma SpecialComment
+hi def link s_intrinsic PreProc
+
+" =============================================================================
+"                          E F F E C T  T Y P E S
+" -----------------------------------------------------------------------------
+
+" Effect type annotations: <IO>, <IO, Error>, <Random>, etc.
+syn match s_effect '<[A-Z][a-zA-Z0-9_]*\(,\s*[A-Z][a-zA-Z0-9_]*\)*>'
+
+" -----------------------------------------------------------------------------
+hi def link s_effect Type
 
 " =============================================================================
 "                          M I S C E L L A N I A
 " -----------------------------------------------------------------------------
 syn match s_varlabel '\w\+:'
-syn match s_varlabel '<\w\+>'
+
 " -----------------------------------------------------------------------------
 hi def link s_varlabel Special
 
@@ -168,8 +159,6 @@ syn match s_doc_tag /\(author\|desc\|email\|github\|bugs\|website\|maintainer\):
 syn match s_doc_tag /\(arg\|short\|long\|name\|true\|false\|metavar\|metavars\|group\|form\|example\|unroll\|default\|literal\):/ contained
 
 " define comments
-" syn match comment '\/\/.*$' contains=tag
-" syn region comment start='\/\*' end='\*\/' contains=tag
 syn match s_docstr '--\'.*' contains=s_doc_tag
 syn match s_comment '--\'\@!.*' contains=s_todo
 
@@ -179,14 +168,6 @@ syn region s_comment start="{-" end="-}" contains=s_todo
 "                               E R R O R S
 " -----------------------------------------------------------------------------
 syn match s_error '^#'
-
-syn match reserved '\<table\>'
-syn match reserved '\<import\>'
-syn match reserved '\<type\>'
-syn match reserved '\<instance\>'
-syn match reserved '\<class\>'
-syn match reserved '\<object\>'
-syn match reserved '\<record\>'
 
 " -----------------------------------------------------------------------------
 hi def link s_comment Comment
