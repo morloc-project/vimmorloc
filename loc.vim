@@ -22,7 +22,7 @@ let b:current_syntax = "loc"
 
 syn keyword reserved where module from as source export
 syn keyword reserved do in let
-syn keyword reserved type record object table
+syn keyword reserved type record object
 syn keyword reserved class instance import
 syn keyword reserved infixl infixr infix
 
