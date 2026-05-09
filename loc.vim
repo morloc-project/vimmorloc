@@ -26,7 +26,7 @@ syn keyword reserved type record object
 syn keyword reserved class instance import
 syn keyword reserved infixl infixr infix
 
-syn keyword s_constant True False Null
+syn keyword s_constant True False Null Inf NaN -Inf
 
 " -----------------------------------------------------------------------------
 hi def link reserved Keyword
